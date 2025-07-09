@@ -1,0 +1,22 @@
+<% layout('/layouts/boilerplate') -%>
+
+<div class="row mt-4">
+  <div
+    class="alert alert-danger col-md-6 offset-md-3 text-center p-4"
+    role="alert"
+  >
+    <svg class="bi flex-shrink-0 me-2 mb-2" role="img" aria-label="Danger:">
+      <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+
+    <!-- 🐵 Styled monkey image -->
+    <img
+      src="https://images.unsplash.com/photo-1595696543058-dae682d57b7a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTM2fHxjcnklMjBkb2xsfGVufDB8fDB8fHww"
+      alt="error_image"
+      class="img-fluid rounded mb-3"
+      style="max-height: 250px; width: auto"
+    />
+
+    <p class="alert-heading fs-5 fw-semibold"><%= message %></p>
+  </div>
+</div>
