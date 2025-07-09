@@ -122,3 +122,10 @@ body {
   padding-left: 0;
   padding-right: 0;
 }
+
+.logout:hover {
+  background-color: #ff4d4d !important;
+  color: white !important;
+  transition: color 0.3s ease;
+  border-radius: 1rem !important;
+}
