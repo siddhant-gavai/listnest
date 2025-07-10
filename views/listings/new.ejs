@@ -5,7 +5,6 @@
     <br /><br />
     <h3>Create a New Listing</h3>
 
-    <!-- 🧠 Form starts here -->
     <form
       method="POST"
       action="/listings"
@@ -14,7 +13,6 @@
       enctype="multipart/form-data"
       onsubmit="return handleSubmit(this)"
     >
-      <!-- 🏷️ Title -->
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -27,7 +25,6 @@
         <div class="valid-feedback">Title looks good</div>
       </div>
 
-      <!-- 📝 Description -->
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea
@@ -39,7 +36,6 @@
         <div class="invalid-feedback">Please enter a short description</div>
       </div>
 
-      <!-- 🖼️ Image Upload -->
       <div class="mb-3">
         <label for="image" class="form-label">Upload Image (max 4MB)</label>
         <input
@@ -53,7 +49,6 @@
         <div class="invalid-feedback">Please upload an image</div>
       </div>
 
-      <!-- 💰 Price + 🌍 Country -->
       <div class="row">
         <div class="mb-3 col-md-4">
           <label for="price" class="form-label">Price</label>
@@ -80,7 +75,6 @@
         </div>
       </div>
 
-      <!-- 📍 Location -->
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
         <input
@@ -93,11 +87,9 @@
         <div class="invalid-feedback">Please enter the location</div>
       </div>
 
-      <!-- ✅ Submit Button -->
       <button class="btn btn-dark add-btn mt-3">Add</button>
     </form>
 
-    <!-- ⏳ Loader Section (Hidden by default) -->
     <div id="loader" style="display: none" class="text-center mt-4">
       <div class="spinner-border text-dark" role="status">
         <span class="visually-hidden">Uploading...</span>
@@ -107,13 +99,12 @@
   </div>
 </div>
 
-<!-- 🔁 Script: Loader + File Size Validation -->
 <script>
   function validateImageSize(input) {
     const file = input.files[0];
     if (file && file.size > 4 * 1024 * 1024) {
       alert("Image must be smaller than 4MB.");
-      input.value = ""; // Reset file input
+      input.value = "";
     }
   }
 
@@ -123,12 +114,12 @@
       const file = fileInput.files[0];
       if (file.size > 4 * 1024 * 1024) {
         alert("Image must be smaller than 4MB.");
-        return false; // Block form submission
+        return false;
       }
     }
 
-    form.style.display = "none"; // Hide form
-    document.getElementById("loader").style.display = "block"; // Show loader
-    return true; // Allow submission
+    form.style.display = "none";
+    document.getElementById("loader").style.display = "block";
+    return true;
   }
 </script>
