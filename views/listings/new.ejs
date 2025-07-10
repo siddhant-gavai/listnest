@@ -1,17 +1,22 @@
 <% layout('/layouts/boilerplate') %>
+
 <div class="row mt-3">
   <div class="col-8 offset-2">
     <br /><br />
     <h3>Create a New Listing</h3>
+
+    <!-- 🧠 Form starts here -->
     <form
       method="POST"
       action="/listings"
       novalidate
       class="needs-validation"
       enctype="multipart/form-data"
+      onsubmit="return handleSubmit(this)"
     >
+      <!-- 🏷️ Title -->
       <div class="mb-3">
-        <label for="title" class="form-label">Ttile</label>
+        <label for="title" class="form-label">Title</label>
         <input
           name="listing[title]"
           placeholder="Add a catchy title"
@@ -21,6 +26,8 @@
         />
         <div class="valid-feedback">Title looks good</div>
       </div>
+
+      <!-- 📝 Description -->
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea
@@ -32,22 +39,31 @@
         <div class="invalid-feedback">Please enter a short description</div>
       </div>
 
+      <!-- 🖼️ Image Upload -->
       <div class="mb-3">
-        <label for="image" class="form-label">Upload Image</label>
-        <input name="listing[image]" type="file" class="form-control" />
+        <label for="image" class="form-label">Upload Image (max 4MB)</label>
+        <input
+          name="listing[image]"
+          type="file"
+          class="form-control"
+          accept="image/*"
+          onchange="validateImageSize(this)"
+          required
+        />
+        <div class="invalid-feedback">Please upload an image</div>
       </div>
 
+      <!-- 💰 Price + 🌍 Country -->
       <div class="row">
         <div class="mb-3 col-md-4">
           <label for="price" class="form-label">Price</label>
           <input
             name="listing[price]"
-            placeholder=" Ex-1200"
+            placeholder="Ex-1200"
             type="number"
             class="form-control"
             required
           />
-
           <div class="invalid-feedback">Please enter a valid price</div>
         </div>
 
@@ -60,21 +76,59 @@
             class="form-control"
             required
           />
-          <div class="invalid-feedback">Please enter the coutry name</div>
+          <div class="invalid-feedback">Please enter the country name</div>
         </div>
       </div>
+
+      <!-- 📍 Location -->
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
         <input
           name="listing[location]"
-          placeholder=" Ex- Moscow , Saint Petersburg "
+          placeholder="Ex- Moscow, Saint Petersburg"
           type="text"
           class="form-control"
           required
         />
-        <div class="invalid-feedback">Please enter the Location</div>
+        <div class="invalid-feedback">Please enter the location</div>
       </div>
+
+      <!-- ✅ Submit Button -->
       <button class="btn btn-dark add-btn mt-3">Add</button>
     </form>
+
+    <!-- ⏳ Loader Section (Hidden by default) -->
+    <div id="loader" style="display: none" class="text-center mt-4">
+      <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Uploading...</span>
+      </div>
+      <p>Please wait, uploading listing...</p>
+    </div>
   </div>
 </div>
+
+<!-- 🔁 Script: Loader + File Size Validation -->
+<script>
+  function validateImageSize(input) {
+    const file = input.files[0];
+    if (file && file.size > 4 * 1024 * 1024) {
+      alert("Image must be smaller than 4MB.");
+      input.value = ""; // Reset file input
+    }
+  }
+
+  function handleSubmit(form) {
+    const fileInput = form.querySelector('input[type="file"]');
+    if (fileInput && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      if (file.size > 4 * 1024 * 1024) {
+        alert("Image must be smaller than 4MB.");
+        return false; // Block form submission
+      }
+    }
+
+    form.style.display = "none"; // Hide form
+    document.getElementById("loader").style.display = "block"; // Show loader
+    return true; // Allow submission
+  }
+</script>

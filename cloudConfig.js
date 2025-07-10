@@ -11,7 +11,10 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "listnest_DEV",
-    allowerFormats: ["png", "jpeg", "jpg"],
+    allowed_formats: ["png", "jpeg", "jpg"], // ✅ fixed typo
+    transformation: [
+      { width: 800, height: 600, crop: "limit", quality: "auto" }, // ✅ image compression
+    ],
   },
 });
 
