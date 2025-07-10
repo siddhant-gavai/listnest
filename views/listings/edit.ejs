@@ -31,8 +31,11 @@
 
       <div class="mb-3">
         <label class="form-label">Current Image</label><br />
+
+        <% const lowResUrl = listing.image.url.replace('/upload/',
+        '/upload/w_200,q_20/'); %>
         <img
-          src="<%= listing.image.url %>"
+          src="<%= lowResUrl %>"
           alt="Current image"
           class="img-fluid rounded"
           style="max-height: 200px"
