@@ -31,10 +31,10 @@ router
   .route("/:id")
   .get(wrapAsync(listingController.showListing))
   .put(
-    validateListing,
-
     isLoggedIn,
     isOwner,
+    upload.single("listing[image]"),
+    validateListing,
     wrapAsync(listingController.updateListing)
   )
   .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));

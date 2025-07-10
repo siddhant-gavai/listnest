@@ -49,16 +49,18 @@ module.exports.editForm = async (req, res) => {
 };
 
 module.exports.updateListing = async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-  req.flash("success", " Listing Updated ! ");
+  const { id } = req.params;
+  const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+
+  // Check if new image is uploaded
+  if (req.file) {
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  }
+
+  await listing.save();
+  req.flash("success", "Listing Updated Successfully");
   res.redirect(`/listings/${id}`);
-};
-
-module.exports.destroyListing = async (req, res) => {
-  let { id } = req.params;
-  let deletedListing = await Listing.findByIdAndDelete(id);
-
-  req.flash("success", " Listing Deleted ! ");
-  res.redirect("/listings");
 };
