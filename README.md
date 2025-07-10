@@ -36,3 +36,6 @@ This project uses [Cloudinary](https://cloudinary.com) to store uploaded images.
 ### 🔐 .env Configuration
 
 Create a `.env` file in the root directory and add:
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
