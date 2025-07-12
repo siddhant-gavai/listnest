@@ -13,14 +13,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">Add new Listings </a>
+        <a class="nav-link" href="/listings">Explore</a>
       </div>
       <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">Become a host </a>
         <% if(!currUser) { %>
-        <a class="nav-link" href="/signup">Sign-Up</a>
-        <a class="nav-link" href="/login">Login</a>
+        <a class="nav-link logout" href="/signup"><b>Sign-Up</b></a>
+        <a class="nav-link logout" href="/login"><b>Login</b></a>
         <% } %> <% if(currUser) { %>
         <a class="nav-link logout" href="/logout">LogOut</a>
         <% } %>

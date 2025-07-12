@@ -1,29 +1,70 @@
 <% layout('/layouts/boilerplate') -%>
-<body>
-  <h1>All Listings</h1>
-  <!-- <form method="GET" action="/listings/new">
-                <button>Create New Listing</button>
-              </form> -->
+<style>
+  #filters {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 0.6rem;
+  }
 
-  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-    <% for(let listing of allListings ){ %>
-    <a href="/listings/<%=listing._id%>" class="listing-link">
-      <div class="card listing-card">
-        <img
-          src="<%= listing.image.url%>"
-          class="card-img-top"
-          alt="listing_image"
-          style="height: 20rem"
-        />
-        <div class="card-img-overlay"></div>
-        <div class="card-body">
-          <p class="card-text">
-            <b> <%= listing.title %></b> <br />
-            &#8377; <%= listing.price.toLocaleString("en-IN") %> Night
-          </p>
-        </div>
-      </div>
-    </a>
-    <% } %>
+  .filter {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    min-width: 70px;
+  }
+
+  .filter i {
+    font-size: 18px;
+    margin-bottom: 5px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .filter:hover {
+    color: #ff385c;
+    opacity: 1;
+    cursor: pointer;
+  }
+</style>
+
+<div id="filters" style="display: flex; gap: 20px">
+  <div class="filter"><i class="fas fa-tractor"></i><br />Farms</div>
+  <div class="filter"><i class="fas fa-bed"></i><br />Rooms</div>
+  <div class="filter"><i class="fas fa-image"></i><br />Amazing views</div>
+  <div class="filter"><i class="fas fa-city"></i><br />Iconic cities</div>
+  <div class="filter"><i class="fa-solid fa-mountain"></i><br />Mountains</div>
+  <div class="filter"><i class="fas fa-water"></i><br />Surfing</div>
+  <div class="filter">
+    <i class="fas fa-swimming-pool"></i><br />Amazing pools
   </div>
-</body>
+  <div class="filter"><i class="fas fa-umbrella-beach"></i><br />Beach</div>
+  <div class="filter"><i class="fas fa-home"></i><br />Cabins</div>
+  <div class="filter"><i class="fas fa-bolt"></i><br />OMG!</div>
+  <div class="filter"><i class="fas fa-water"></i><br />Lakefront</div>
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <% for(let listing of allListings ){ %>
+  <a href="/listings/<%=listing._id%>" class="listing-link">
+    <div class="card listing-card">
+      <img
+        src="<%= listing.image.url%>"
+        class="card-img-top"
+        alt="listing_image"
+        style="height: 20rem"
+      />
+      <div class="card-img-overlay"></div>
+      <div class="card-body">
+        <p class="card-text">
+          <b> <%= listing.title %></b> <br />
+          &#8377; <%= listing.price.toLocaleString("en-IN") %> Night
+        </p>
+      </div>
+    </div>
+  </a>
+  <% } %>
+</div>
