@@ -1,5 +1,6 @@
 const Review = require("../models/review");
 const Listing = require("../models/listing");
+const path = require("path");
 
 module.exports.createReview = async (req, res) => {
   let { id } = req.params;

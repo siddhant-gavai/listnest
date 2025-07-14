@@ -7,18 +7,19 @@
     overflow-x: auto;
     white-space: nowrap;
     font-size: 0.6rem;
+    align-items: center; /* Align all items including switch */
   }
 
   .filter {
     text-align: center;
-    font-size: 14px;
+    font-size: 0.75rem;
     color: #555;
     cursor: pointer;
     min-width: 70px;
   }
 
   .filter i {
-    font-size: 18px;
+    font-size: 0.8rem;
     margin-bottom: 5px;
     display: block;
     opacity: 0.7;
@@ -27,16 +28,26 @@
   .filter:hover {
     color: #ff385c;
     opacity: 1;
-    cursor: pointer;
+  }
+
+  .tax-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  .form-check-input {
+    margin-right: 5px;
   }
 </style>
 
-<div id="filters" style="display: flex; gap: 20px">
+<div id="filters">
   <div class="filter"><i class="fas fa-tractor"></i><br />Farms</div>
   <div class="filter"><i class="fas fa-bed"></i><br />Rooms</div>
   <div class="filter"><i class="fas fa-image"></i><br />Amazing views</div>
   <div class="filter"><i class="fas fa-city"></i><br />Iconic cities</div>
-  <div class="filter"><i class="fa-solid fa-mountain"></i><br />Mountains</div>
+  <div class="filter"><i class="fas fa-mountain"></i><br />Mountains</div>
   <div class="filter"><i class="fas fa-water"></i><br />Surfing</div>
   <div class="filter">
     <i class="fas fa-swimming-pool"></i><br />Amazing pools
@@ -45,6 +56,20 @@
   <div class="filter"><i class="fas fa-home"></i><br />Cabins</div>
   <div class="filter"><i class="fas fa-bolt"></i><br />OMG!</div>
   <div class="filter"><i class="fas fa-water"></i><br />Lakefront</div>
+
+  <div class="tax-toggle ms-auto">
+    <div class="form-check-reverse form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="switchCheckDefault"
+      />
+      <label class="form-check-label" for="switchCheckDefault">
+        Show Price With Tax
+      </label>
+    </div>
+  </div>
 </div>
 
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">

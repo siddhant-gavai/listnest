@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const path = require("path");
 const {
   validateReview,
   isReviewAuthor,
