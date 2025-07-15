@@ -1,8 +1,94 @@
+<style>
+  .navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    min-height: 100px;
+  }
+
+  .search-bar {
+    background-color: white;
+    border-radius: 50px;
+    font-size: 1rem;
+    height: 70px;
+    padding: 0 20px;
+    margin: 20px auto;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    max-width: 750px;
+    width: 100%;
+  }
+
+  .search-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease,
+      border-radius 0.3s ease;
+    opacity: 1;
+    padding: 10px 22px; /* ⬅️ top-bottom padding bhi diya */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    border-radius: 25px; /* ⬅️ default border-radius */
+  }
+
+  .search-item:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    border-radius: 25px;
+  }
+
+  .search-item .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #222;
+  }
+
+  .search-item .value {
+    font-size: 0.78rem;
+    color: #6c757d;
+  }
+
+  .search-icon button {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .border-end {
+    border-right: 1px solid #dee2e6 !important;
+  }
+
+  @media (max-width: 768px) {
+    .search-bar {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .search-item {
+      padding: 10px 0;
+    }
+
+    .search-icon {
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+  }
+</style>
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"
-      ><i class="fa-solid fa-compass"></i
-    ></a>
+    <!-- Left -->
+    <a class="navbar-brand d-flex align-items-center" href="/listings">
+      <i class="fa-solid fa-compass text-danger me-2"></i> Explore
+    </a>
+
+    <!-- Toggler -->
     <button
       class="navbar-toggler"
       type="button"
@@ -11,16 +97,44 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
+      <!-- 🌟 Centered Search Bar -->
+      <div class="d-flex justify-content-center flex-grow-1">
+        <div
+          class="search-bar d-flex align-items-center justify-content-between"
+        >
+          <div class="search-item border-end">
+            <div class="label">Where</div>
+            <div class="value">Search destinations</div>
+          </div>
+          <div class="search-item border-end">
+            <div class="label">Check in</div>
+            <div class="value">Add dates</div>
+          </div>
+          <div class="search-item border-end">
+            <div class="label">Check out</div>
+            <div class="value">Add dates</div>
+          </div>
+          <div class="search-item">
+            <div class="label">Who</div>
+            <div class="value">Add guests</div>
+          </div>
+          <div class="search-icon ms-3">
+            <button class="btn btn-danger rounded-circle p-0">
+              <i class="fa fa-search text-white"></i>
+            </button>
+          </div>
+        </div>
       </div>
+
+      <!-- Right -->
       <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Become a host </a>
+        <a class="nav-link" href="/listings/new">Become a host</a>
         <% if(!currUser) { %>
         <a class="nav-link logout" href="/signup"><b>Sign-Up</b></a>
         <a class="nav-link logout" href="/login"><b>Login</b></a>
-        <% } %> <% if(currUser) { %>
+        <% } else { %>
         <a class="nav-link logout" href="/logout">LogOut</a>
         <% } %>
       </div>
