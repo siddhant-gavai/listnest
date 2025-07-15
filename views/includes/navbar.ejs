@@ -22,13 +22,13 @@
     transition: background-color 0.3s ease, transform 0.2s ease,
       border-radius 0.3s ease;
     opacity: 1;
-    padding: 10px 22px; /* ⬅️ top-bottom padding bhi diya */
+    padding: 10px 22px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    border-radius: 25px; /* ⬅️ default border-radius */
+    border-radius: 25px;
   }
 
   .search-item:hover {
@@ -83,12 +83,10 @@
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <!-- Left -->
     <a class="navbar-brand d-flex align-items-center" href="/listings">
       <i class="fa-solid fa-compass text-danger me-2"></i> Explore
     </a>
 
-    <!-- Toggler -->
     <button
       class="navbar-toggler"
       type="button"
@@ -99,7 +97,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <!-- 🌟 Centered Search Bar -->
+      <% if (showSearchBar) { %>
       <div class="d-flex justify-content-center flex-grow-1">
         <div
           class="search-bar d-flex align-items-center justify-content-between"
@@ -127,8 +125,8 @@
           </div>
         </div>
       </div>
+      <% } %>
 
-      <!-- Right -->
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="/listings/new">Become a host</a>
         <% if(!currUser) { %>

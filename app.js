@@ -73,6 +73,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  const hiddenRoutes = ["/login", "/signup"];
+  res.locals.showSearchBar = !hiddenRoutes.includes(req.path);
+  next();
+});
+
 // app.get("/registerUser", async (req, res) => {
 //   let user1 = new User({
 //     email: "Siddhant@gmail.com",
