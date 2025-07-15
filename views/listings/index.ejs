@@ -40,6 +40,22 @@
   .form-check-input {
     margin-right: 5px;
   }
+  .taxPrice {
+    display: none;
+  }
+  .tax-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid grey;
+    padding: 10px 18px;
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #333;
+    white-space: nowrap;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
 </style>
 
 <div id="filters">
@@ -87,9 +103,25 @@
         <p class="card-text">
           <b> <%= listing.title %></b> <br />
           &#8377; <%= listing.price.toLocaleString("en-IN") %> Night
+          <i class="taxPrice"> &nbsp; &nbsp; +18% GST</i>
         </p>
       </div>
     </div>
   </a>
   <% } %>
 </div>
+
+<script>
+  const taxSwitch = document.getElementById("switchCheckDefault");
+
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("taxPrice");
+    for (info of taxInfo) {
+      if (info.style.display != "inline") {
+        info.style.display = "inline";
+      } else {
+        info.style.display = "none";
+      }
+    }
+  });
+</script>
