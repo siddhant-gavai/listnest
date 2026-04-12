@@ -1,36 +1,69 @@
 <% layout('/layouts/boilerplate') %>
 
-<div class="row mt-3">
-  <h1 class="col-6 offset-3">Login</h1>
-  <div class="col-6 offset-3">
-    <form action="/login" method="POST" novalidate class="needs-validation">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input
-          name="username"
-          placeholder="Enter a username"
-          id="username"
-          type="text"
-          class="form-control"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input
-          name="password"
-          placeholder="Enter a password"
-          id="password"
-          type="password"
-          class="form-control"
-          required
-        />
-        <div class="invalid-feedback">Please enter a valid password</div>
-      </div>
-      <button class="btn btn-success">Log in</button>
-    </form>
-    <form action="/signup">
-      <button class="btn btn-dark edit-btn mt-3">Signup</button>
-    </form>
+<div class="flex items-center justify-center min-h-[70vh] bg-gray-50 flex-col py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <!-- Logo Icon -->
+    <div class="mx-auto flex justify-center text-indigo-600 mb-2">
+      <i class="fa-solid fa-compass text-5xl"></i>
+    </div>
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+      Log in to Listnest
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Or
+      <a href="/signup" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+        create a new account
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow-xl border border-gray-100 sm:rounded-2xl sm:px-10">
+      <form action="/login" method="POST" novalidate class="needs-validation space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-semibold text-gray-700">
+            Username
+          </label>
+          <div class="mt-1">
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              required
+              class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow"
+              placeholder="Enter your username"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-gray-700">
+            Password
+          </label>
+          <div class="mt-1">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-shadow"
+              placeholder="••••••••"
+            />
+          </div>
+          <div class="invalid-feedback text-sm text-rose-500 mt-1">Please enter a valid password</label>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Log in
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
