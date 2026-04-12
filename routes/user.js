@@ -6,7 +6,7 @@ const { reviewSchema } = require("../schema.js");
 const ExpressError = require("../utils/expressError.js");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const { saveRedirectUrl } = require("../middleware.js");
+const { saveRedirectUrl, isLoggedIn } = require("../middleware.js");
 
 const userController = require("../controllers/user.js");
 
@@ -30,5 +30,8 @@ router
 // Logout
 
 router.get("/logout", userController.logout);
+
+// Wishlist
+router.post("/wishlist/:id", isLoggedIn, wrapAsync(userController.toggleWishlist));
 
 module.exports = router;

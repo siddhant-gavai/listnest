@@ -80,9 +80,15 @@
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
-          <!-- Heart Icon Overlay (UI only) -->
+          <!-- Heart Icon Overlay (Persistence Wishlist) -->
           <div class="absolute top-3 right-3 text-white transition-transform z-10 hover:scale-110" onclick="event.stopPropagation(); toggleLike('<%= listing._id %>', this)">
-            <svg class="heart-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; fill: rgba(0, 0, 0, 0.5); height: 24px; width: 24px; stroke: white; stroke-width: 2; overflow: visible;">
+            <% 
+              let liked = false;
+              if(currUser && currUser.wishlist) {
+                liked = currUser.wishlist.some(wishId => wishId.toString() === listing._id.toString());
+              }
+            %>
+            <svg class="heart-btn <%= liked ? 'liked' : '' %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; fill: rgba(0, 0, 0, 0.5); height: 24px; width: 24px; stroke: white; stroke-width: 2; overflow: visible;">
               <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
             </svg>
           </div>
@@ -98,10 +104,11 @@
               <span class="tax-info hidden text-xs text-gray-500 ml-1">(incl. 18% GST)</span>
             </div>
           </div>
-          <!-- Dummy Rating -->
+          <!-- Dynamic Rating (Randomized but consistent for session) -->
           <div class="flex items-center gap-1 text-sm text-gray-900">
             <i class="fa-solid fa-star text-xs"></i>
-            <span><%= (Math.random() * (5.0 - 4.2) + 4.2).toFixed(1) %></span>
+            <% let rating = (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1); %>
+            <span><%= rating %></span>
           </div>
         </div>
       </div>
@@ -153,29 +160,28 @@
     });
   }
 
-  // Heart / Like Logic
-  function toggleLike(id, btn) {
-      let likes = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      let svg = btn.querySelector('svg');
-      
-      if(likes.includes(id)) {
-          likes = likes.filter(itemId => itemId !== id);
-          svg.classList.remove('liked');
-      } else {
-          likes.push(id);
-          svg.classList.add('liked');
+  // Heart / Like Logic (Persistence)
+  async function toggleLike(id, btn) {
+      if(!'<%= currUser %>') {
+          window.location.href = '/login';
+          return;
       }
-      localStorage.setItem('wishlist', JSON.stringify(likes));
-  }
 
-  // Load Likes on Page Load
-  document.addEventListener("DOMContentLoaded", () => {
-      let likes = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      document.querySelectorAll('.listing-link').forEach(card => {
-          let id = card.getAttribute('onclick').match(/'([^']+)'/)[1];
-          if(likes.includes(id)) {
-              card.querySelector('.heart-btn').classList.add('liked');
+      const svg = btn.querySelector('svg');
+      
+      try {
+          const response = await fetch(`/wishlist/${id}`, { method: 'POST' });
+          const result = await response.json();
+          
+          if (result.success) {
+              if (result.liked) {
+                  svg.classList.add('liked');
+              } else {
+                  svg.classList.remove('liked');
+              }
           }
-      });
-  });
+      } catch (error) {
+          console.error("Wishlist Error:", error);
+      }
+  }
 </script>

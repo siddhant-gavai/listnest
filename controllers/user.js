@@ -42,3 +42,24 @@ module.exports.logout = (req, res, next) => {
     res.redirect("/listings");
   });
 };
+
+module.exports.toggleWishlist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(req.user._id);
+    
+    const index = user.wishlist.indexOf(id);
+    if (index === -1) {
+      user.wishlist.push(id);
+      await user.save();
+      return res.json({ success: true, liked: true, message: "Added to Wishlist ❤️" });
+    } else {
+      user.wishlist.splice(index, 1);
+      await user.save();
+      return res.json({ success: true, liked: false, message: "Removed from Wishlist 💔" });
+    }
+  } catch (error) {
+    console.error("Wishlist error:", error);
+    res.status(500).json({ success: false, message: "Something went wrong." });
+  }
+};
