@@ -5,7 +5,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const { reviewSchema } = require("../schema.js");
 const ExpressError = require("../utils/expressError.js");
 const passport = require("passport");
-const LocalStratergy = require("passport-local");
+const LocalStrategy = require("passport-local");
 const { saveRedirectUrl } = require("../middleware.js");
 
 const userController = require("../controllers/user.js");

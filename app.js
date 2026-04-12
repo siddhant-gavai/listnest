@@ -13,7 +13,7 @@ var cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
-const LocalStratergy = require("passport-local");
+const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
 const listingRouter = require("./routes/listing.js");
@@ -52,16 +52,12 @@ const sessionOptions = {
   },
 };
 
-// app.get("/", (req, res) => {
-//   res.send("working");
-// });
-
 app.use(session(sessionOptions));
 app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStratergy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -78,15 +74,6 @@ app.use((req, res, next) => {
   res.locals.showSearchBar = !hiddenRoutes.includes(req.path);
   next();
 });
-
-// app.get("/registerUser", async (req, res) => {
-//   let user1 = new User({
-//     email: "Siddhant@gmail.com",
-//     username: "Sidhu",
-//   });
-//   const registerUser = await User.register(user1, "siddhant@1212");
-//   res.send(registerUser);
-// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
