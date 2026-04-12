@@ -48,6 +48,10 @@ module.exports.toggleWishlist = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
     
+    if (!user.wishlist) {
+      user.wishlist = [];
+    }
+
     const index = user.wishlist.indexOf(id);
     if (index === -1) {
       user.wishlist.push(id);

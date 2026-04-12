@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate') -%>
 
-<<!-- Categories / Filters Scrollable Row -->
+<!-- Categories / Filters Scrollable Row -->
 <div class="sticky top-20 z-40 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 shadow-sm mb-6 pb-2">
   <div id="filters" class="flex gap-6 overflow-x-auto no-scrollbar items-center max-w-[80%] hide-scrollbar">
     <% 
@@ -85,7 +85,7 @@
             <% 
               let liked = false;
               if(currUser && currUser.wishlist) {
-                liked = currUser.wishlist.some(wishId => wishId.toString() === listing._id.toString());
+                liked = currUser.wishlist.some(wishId => wishId && wishId.toString() === listing._id.toString());
               }
             %>
             <svg class="heart-btn <%= liked ? 'liked' : '' %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true" role="presentation" focusable="false" style="display: block; fill: rgba(0, 0, 0, 0.5); height: 24px; width: 24px; stroke: white; stroke-width: 2; overflow: visible;">
@@ -161,8 +161,10 @@
   }
 
   // Heart / Like Logic (Persistence)
+  const isAuthenticated = <%= currUser ? 'true' : 'false' %>;
+
   async function toggleLike(id, btn) {
-      if(!'<%= currUser %>') {
+      if(!isAuthenticated) {
           window.location.href = '/login';
           return;
       }

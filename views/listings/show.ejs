@@ -1,19 +1,17 @@
-<% layout('/layouts/boilerplate') %>
+<% layout('layouts/boilerplate') %>
 
 <% 
-  // Calculate Dynamic Rating
-  let avgRating = 0;
+  // Safe Dynamic Rating Calculation
+  let avgRating = "New";
   if(listing.reviews && listing.reviews.length > 0) {
-    let sum = listing.reviews.reduce((acc, rev) => acc + rev.rating, 0);
+    let sum = listing.reviews.reduce((acc, rev) => acc + (rev.rating || 0), 0);
     avgRating = (sum / listing.reviews.length).toFixed(1);
-  } else {
-    avgRating = "New";
   }
 
-  // Check if liked in DB
+  // Safe Wishlist Check
   let isLiked = false;
   if (currUser && currUser.wishlist) {
-    isLiked = currUser.wishlist.some(wishId => wishId.toString() === listing._id.toString());
+    isLiked = currUser.wishlist.some(wishId => wishId && wishId.toString() === listing._id.toString());
   }
 %>
 
@@ -320,7 +318,8 @@
     }
 
     async function handleBooking(listingId, pricePerNight) {
-        if(!'<%= currUser %>') {
+        const isAuthenticated = <%= currUser ? 'true' : 'false' %>;
+        if(!isAuthenticated) {
             window.location.href = '/login';
             return;
         }
