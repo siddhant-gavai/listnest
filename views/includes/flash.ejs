@@ -1,28 +1,71 @@
-<% if(success && success.length) { %>
-<div
-  class="alert alert-success alert-dismissible fade show col-6 offset-3"
-  role="alert"
->
-  <%= success %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+<!-- Flash Toast Container -->
+<div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6 z-[100] mt-16">
+  <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+    
+    <% if(success && success.length) { %>
+    <!-- Success Toast -->
+    <div id="toast-success" class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 transform transition-all duration-300 ease-in-out translate-y-0 opacity-100 sm:translate-y-0 sm:translate-x-0">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <i class="fa-solid fa-circle-check text-green-400 text-xl"></i>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">Success!</p>
+            <p class="mt-1 text-sm text-gray-500"><%= success %></p>
+          </div>
+          <div class="ml-4 flex flex-shrink-0">
+            <button type="button" onclick="closeToast('toast-success')" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
+              <span class="sr-only">Close</span>
+              <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+    <% if(error && error.length) { %>
+    <!-- Error Toast -->
+    <div id="toast-error" class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 transform transition-all duration-300 ease-in-out translate-y-0 opacity-100 sm:translate-y-0 sm:translate-x-0">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <i class="fa-solid fa-circle-exclamation text-rose-500 text-xl"></i>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">Error</p>
+            <p class="mt-1 text-sm text-gray-500"><%= error %></p>
+          </div>
+          <div class="ml-4 flex flex-shrink-0">
+            <button type="button" onclick="closeToast('toast-error')" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
+              <span class="sr-only">Close</span>
+              <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+  </div>
 </div>
 
-<% } %> <% if(error && error.length) { %>
-<div
-  class="alert alert-danger alert-dismissible fade show col-6 offset-3"
-  role="alert"
->
-  <%= error %>
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-<% } %>
+<script>
+  function closeToast(id) {
+    const toast = document.getElementById(id);
+    if (toast) {
+      toast.style.opacity = '0';
+      toast.style.transform = window.innerWidth >= 640 ? 'translateX(100%)' : 'translateY(100%)';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 300);
+    }
+  }
+
+  // Auto-dismiss after 4 seconds
+  setTimeout(() => {
+    closeToast('toast-success');
+    closeToast('toast-error');
+  }, 4000);
+</script>
