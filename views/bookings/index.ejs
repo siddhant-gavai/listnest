@@ -1,0 +1,66 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-10 text-center sm:text-left">
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Your Confirmed Bookings</h1>
+        <p class="text-lg text-gray-500 mt-2">Manage and view all your upcoming and past stays on Listnest.</p>
+    </div>
+
+    <% if (bookings && bookings.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% for (let booking of bookings) { %>
+                <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full shadow-md uppercase tracking-wider">
+                                <%= booking.status %>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 truncate">
+                            <a href="/listings/<%= booking.listing._id %>" class="hover:text-indigo-600 transition-colors no-underline text-gray-900"><%= booking.listing.title %></a>
+                        </h3>
+                        <p class="text-gray-500 text-sm mt-1 mb-4 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <%= booking.listing.location %>, <%= booking.listing.country %>
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 py-4 border-y border-gray-50 mb-4">
+                            <div>
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-tighter">Check-in</p>
+                                <p class="text-sm font-semibold text-gray-700 mt-1"><%= booking.checkIn.toDateString() %></p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-tighter">Check-out</p>
+                                <p class="text-sm font-semibold text-gray-700 mt-1"><%= booking.checkOut.toDateString() %></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center bg-gray-50 rounded-2xl p-4">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-gray-400 font-bold uppercase tracking-tighter">Total Price</span>
+                                <span class="text-lg font-extrabold text-indigo-600">&#8377; <%= booking.totalPrice.toLocaleString("en-IN") %></span>
+                            </div>
+                            <span class="text-xs text-gray-400 italic">Booked on <%= booking.createdAt.toLocaleDateString() %></span>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    <% } else { %>
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center py-24 text-center">
+            <div class="bg-gray-50 p-10 rounded-full mb-8 shadow-inner border border-gray-100">
+                <i class="fa-solid fa-suitcase text-7xl text-indigo-100"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">No trips booked... yet!</h2>
+            <p class="text-lg text-gray-500 max-w-lg mb-10 leading-relaxed">Time to dust off your bags and start planning your next grand adventure on Listnest.</p>
+            <a href="/listings" class="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 transform no-underline">
+                Explore Destinations
+            </a>
+        </div>
+    <% } %>
+</div>

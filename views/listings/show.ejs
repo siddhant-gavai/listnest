@@ -1,24 +1,52 @@
 <% layout('/layouts/boilerplate') %>
 
+<% 
+  // Calculate Dynamic Rating
+  let avgRating = 0;
+  if(listing.reviews && listing.reviews.length > 0) {
+    let sum = listing.reviews.reduce((acc, rev) => acc + rev.rating, 0);
+    avgRating = (sum / listing.reviews.length).toFixed(1);
+  } else {
+    avgRating = "New";
+  }
+
+  // Check if liked in DB
+  let isLiked = false;
+  if (currUser && currUser.wishlist) {
+    isLiked = currUser.wishlist.some(wishId => wishId.toString() === listing._id.toString());
+  }
+%>
+
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16">
   <!-- Header -->
-  <div class="mb-6">
-    <h1 class="text-3xl font-semibold tracking-tight text-gray-900 mb-2"><%= listing.title %></h1>
-    <div class="flex items-center text-sm text-gray-700 font-medium pb-4 border-bottom">
-      <i class="fa-solid fa-star mr-1"></i>
-      <span><%= (Math.random() * (5.0 - 4.2) + 4.2).toFixed(2) %> &middot; </span>
-      <span class="underline mx-2"><%= listing.reviews.length %> reviews</span>
-      <span>&middot;</span>
-      <span class="underline ml-2"><%= listing.location %>, <%= listing.country %></span>
+  <div class="mb-6 flex justify-between items-start">
+    <div>
+      <h1 class="text-3xl font-semibold tracking-tight text-gray-900 mb-2"><%= listing.title %></h1>
+      <div class="flex items-center text-sm text-gray-700 font-medium">
+        <i class="fa-solid fa-star mr-1"></i>
+        <span><%= avgRating %> &middot; </span>
+        <span class="underline mx-2"><%= listing.reviews.length %> reviews</span>
+        <span>&middot;</span>
+        <span class="underline ml-2"><%= listing.location %>, <%= listing.country %></span>
+      </div>
     </div>
+    
+    <!-- Persistence Wishlist Toggle -->
+    <button 
+      onclick="toggleWishlist('<%= listing._id %>', this)"
+      class="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all group"
+    >
+      <i class="fa-heart <%= isLiked ? 'fa-solid text-rose-500' : 'fa-regular text-gray-400' %> text-xl group-hover:scale-110 transition-transform" id="heart-icon"></i>
+      <span class="text-sm font-semibold text-gray-700"><%= isLiked ? 'Saved' : 'Save' %></span>
+    </button>
   </div>
 
   <!-- Hero Image -->
-  <div class="w-full h-[50vh] rounded-2xl overflow-hidden mb-8 shadow-sm">
+  <div class="w-full h-[50vh] rounded-2xl overflow-hidden mb-8 shadow-sm relative">
     <img
       src="<%= listing.image.url %>"
       alt="Listing Image"
-      class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+      class="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
     />
   </div>
 
@@ -29,120 +57,186 @@
       <div class="flex justify-between items-center pb-6 border-b border-gray-200">
         <div>
           <h2 class="text-xl font-semibold mb-1">
-            Hosted by <%= listing.owner ? listing.owner.username : 'Unknown' %>
+            Entire home hosted by <%= listing.owner ? listing.owner.username : 'Host' %>
           </h2>
-          <p class="text-gray-500">2 guests &middot; 1 bedroom &middot; 1 bed &middot; 1 bath</p>
+          <p class="text-gray-500">4 guests &middot; 2 bedrooms &middot; 2 beds &middot; 2 baths</p>
         </div>
-        <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-2xl">
-          <i class="fa-solid fa-user"></i>
+        <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-2xl font-bold">
+          <%= listing.owner ? listing.owner.username[0].toUpperCase() : 'H' %>
         </div>
       </div>
       
       <div class="py-6 border-b border-gray-200">
-        <div class="flex items-start gap-4 mb-4">
-          <i class="fa-solid fa-medal text-2xl text-gray-700"></i>
+        <div class="flex items-start gap-4 mb-6">
+          <i class="fa-solid fa-door-open text-2xl text-gray-700"></i>
           <div>
-            <h3 class="font-semibold text-gray-900">Superhost</h3>
-            <p class="text-gray-500 text-sm">Superhosts are experienced, highly rated hosts who are committed to providing great stays.</p>
+            <h3 class="font-semibold text-gray-900">Self check-in</h3>
+            <p class="text-gray-500 text-sm">Check yourself in with the keypad.</p>
           </div>
         </div>
-        <div class="flex items-start gap-4 mb-4">
-          <i class="fa-solid fa-location-dot text-2xl text-gray-700"></i>
+        <div class="flex items-start gap-4 mb-6">
+          <i class="fa-solid fa-calendar-check text-2xl text-gray-700"></i>
           <div>
-            <h3 class="font-semibold text-gray-900">Great location</h3>
-            <p class="text-gray-500 text-sm">100% of recent guests gave the location a 5-star rating.</p>
+            <h3 class="font-semibold text-gray-900">Free cancellation for 48 hours</h3>
+            <p class="text-gray-500 text-sm">Get a full refund if you change your mind.</p>
           </div>
         </div>
       </div>
 
-      <div class="py-6 border-b border-gray-200">
-        <p class="text-gray-700 leading-relaxed"><%= listing.description %></p>
+      <div class="py-8 border-b border-gray-200">
+        <h3 class="text-xl font-semibold mb-4">About this space</h3>
+        <p class="text-gray-700 leading-relaxed text-lg whitespace-pre-line"><%= listing.description %></p>
       </div>
     </div>
 
-    <!-- Pricing Card -->
+    <!-- Interactive Booking Card -->
     <div class="lg:col-span-1">
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xl sticky top-28">
-        <div class="flex justify-between items-baseline mb-4">
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-2xl sticky top-28 ring-1 ring-black ring-opacity-5">
+        <div class="flex justify-between items-baseline mb-6">
           <div>
             <span class="text-2xl font-bold text-gray-900">&#8377; <%= listing.price.toLocaleString("en-IN") %></span>
-            <span class="text-gray-500"> night</span>
+            <span class="text-gray-500 text-sm font-medium"> night</span>
           </div>
-          <div class="text-sm font-semibold">
-            <i class="fa-solid fa-star text-xs"></i> 4.9 &middot; <span class="text-gray-500 underline"><%= listing.reviews.length %> reviews</span>
+          <div class="text-sm font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-star text-xs text-gray-900"></i> 
+            <span><%= avgRating %></span>
+            <span class="text-gray-400 mx-1">&middot;</span>
+            <span class="text-gray-500 underline"><%= listing.reviews.length %> reviews</span>
           </div>
         </div>
         
-        <div class="mt-4">
-          <button class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] text-white font-semibold py-3 rounded-lg shadow-md">
-            Reserve
-          </button>
+        <!-- Booking Form -->
+        <div class="border border-gray-400 rounded-xl overflow-hidden mb-4">
+          <div class="grid grid-cols-2 border-b border-gray-400">
+            <div class="p-3 border-r border-gray-400">
+              <label class="block text-[10px] font-bold uppercase text-gray-900">CHECK-IN</label>
+              <input type="date" id="check-in" class="w-full text-xs text-gray-500 outline-none mt-1 bg-transparent cursor-pointer" required>
+            </div>
+            <div class="p-3">
+              <label class="block text-[10px] font-bold uppercase text-gray-900">CHECKOUT</label>
+              <input type="date" id="check-out" class="w-full text-xs text-gray-500 outline-none mt-1 bg-transparent cursor-pointer" required>
+            </div>
+          </div>
+          <div class="p-3">
+             <label class="block text-[10px] font-bold uppercase text-gray-900">GUESTS</label>
+             <select class="w-full text-sm text-gray-500 outline-none mt-1 bg-transparent cursor-pointer">
+               <option>1 guest</option>
+               <option selected>2 guests</option>
+               <option>3 guests</option>
+               <option>4 guests</option>
+             </select>
+          </div>
         </div>
+
+        <button 
+          id="reserve-btn"
+          disabled
+          onclick="handleBooking('<%= listing._id %>', <%= listing.price %>)"
+          class="w-full mb-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform font-bold py-3.5 rounded-xl shadow-lg text-white flex items-center justify-center gap-2"
+        >
+          <span id="btn-text">Reserve</span>
+          <div id="btn-loader" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+        </button>
         
-        <div class="text-center text-gray-500 text-sm mt-4">You won't be charged yet</div>
+        <p class="text-center text-gray-500 text-xs mb-6">You won't be charged yet</p>
+
+        <!-- Price Breakdown -->
+        <div id="price-breakdown" class="hidden space-y-3">
+          <div class="flex justify-between text-gray-600">
+            <span class="underline">₹ <%= listing.price.toLocaleString("en-IN") %> x <span id="num-nights">0</span> nights</span>
+            <span>₹ <span id="base-total">0</span></span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span class="underline">Cleaning fee</span>
+            <span>₹ 500</span>
+          </div>
+          <div class="flex justify-between text-gray-600 pb-3 border-b border-gray-200">
+            <span class="underline">Listnest service fee (12%)</span>
+            <span>₹ <span id="service-fee">0</span></span>
+          </div>
+          <div class="flex justify-between text-lg font-bold text-gray-900 pt-3">
+            <span>Total before taxes</span>
+            <span>₹ <span id="grand-total">0</span></span>
+          </div>
+        </div>
 
         <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
-        <!-- Owner Actions -->
         <hr class="my-6 border-gray-200">
-        <div class="space-y-3">
-          <p class="text-sm font-semibold text-gray-700 mb-2">Host Settings</p>
-          <a href="/listings/<%= listing._id %>/edit" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-2.5 rounded-lg transition-colors no-underline">
-            Edit Listing
-          </a>
-          <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-full m-0">
-            <button class="w-full bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold py-2.5 rounded-lg transition-colors border border-rose-100">
-              Delete Listing
-            </button>
-          </form>
+        <div class="space-y-4">
+          <p class="text-sm font-bold text-gray-900 border-l-4 border-indigo-600 pl-3">Hosting Dashboard</p>
+          <div class="grid grid-cols-2 gap-3">
+              <a href="/listings/<%= listing._id %>/edit" class="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-3 rounded-xl transition-all no-underline text-xs">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+              </a>
+              <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="m-0">
+                <button class="w-full flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold py-3 rounded-xl transition-all border border-rose-100 text-xs">
+                  <i class="fa-solid fa-trash"></i> Delete
+                </button>
+              </form>
+          </div>
         </div>
         <% } %>
       </div>
     </div>
   </div>
 
-  <hr class="my-10 border-gray-200" />
+  <hr class="my-16 border-gray-100" />
 
   <!-- Reviews Section -->
-  <div class="mb-10">
-    <div class="flex items-center text-xl font-semibold tracking-tight text-gray-900 mb-6">
-      <i class="fa-solid fa-star mr-2 text-lg"></i>
-      <span>4.9 &middot; <%= listing.reviews.length %> reviews</span>
-    </div>
+  <div>
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8 flex items-center gap-2">
+      <i class="fa-solid fa-medal text-indigo-600"></i>
+      Verified Guest Reviews
+    </h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-8">
+    <% if (listing.reviews && listing.reviews.length > 0) { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
       <% for (let review of listing.reviews) { %>
-      <div>
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-             <i class="fa-solid fa-user text-gray-500"></i>
+      <div class="bg-white p-2">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-white border border-indigo-200 rounded-full flex items-center justify-center font-bold text-indigo-600 shadow-sm">
+             <%= review.author ? review.author.username[0].toUpperCase() : '?' %>
           </div>
           <div>
-            <h4 class="font-semibold text-gray-900 text-sm"><%= review.author ? review.author.username : 'Unknown' %></h4>
-            <p class="text-gray-500 text-xs">Recently</p>
+            <h4 class="font-bold text-gray-900"><%= review.author ? review.author.username : 'Wanderer' %></h4>
+            <div class="flex items-center gap-1">
+                <% for(let i=0; i<5; i++) { %>
+                   <i class="fa-solid fa-star text-[10px] <%= i < review.rating ? 'text-gray-900' : 'text-gray-300' %>"></i>
+                <% } %>
+                <span class="text-gray-400 text-xs ml-2">Verified Stay</span>
+            </div>
           </div>
         </div>
-        <div>
-          <p class="starability-result card-text scale-[0.6] origin-left" data-rating="<%= review.rating %>"></p>
-        </div>
-        <p class="text-gray-700 text-sm mt-2 leading-relaxed"><%= review.comment %></p>
+        <p class="text-gray-700 text-base leading-relaxed line-clamp-3 hover:line-clamp-none transition-all duration-300 cursor-pointer"><%= review.comment %></p>
         
         <% if (currUser && review.author && currUser._id.equals(review.author._id)) { %>
-        <form class="mt-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-          <button class="text-sm text-gray-500 underline hover:text-black transition-colors font-medium">Delete review</button>
+        <form class="mt-4" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+          <button class="text-xs font-bold text-rose-500 hover:text-rose-700 uppercase tracking-widest transition-colors flex items-center gap-1">
+              <i class="fa-solid fa-trash-can"></i> Remove
+          </button>
         </form>
         <% } %>
       </div>
       <% } %>
     </div>
+    <% } else { %>
+        <div class="bg-gray-50 rounded-2xl p-12 text-center border-2 border-dashed border-gray-200">
+            <i class="fa-regular fa-comments text-4xl text-gray-300 mb-4 block"></i>
+            <p class="text-gray-500 font-medium">No reviews yet for this sanctuary. Be the first to share your magic!</p>
+        </div>
+    <% } %>
   </div>
 
   <% if(currUser) { %>
   <!-- Add Review form -->
-  <div class="max-w-2xl bg-gray-50 p-6 rounded-2xl border border-gray-100 mt-8">
-    <h4 class="text-lg font-semibold mb-4 text-gray-900">Leave a Review</h4>
+  <div class="max-w-xl bg-white p-8 rounded-3xl shadow-sm border border-gray-200 mt-16 ring-1 ring-black ring-opacity-5">
+    <h4 class="text-xl font-bold mb-2 text-gray-900">Share your experience</h4>
+    <p class="text-gray-400 text-sm mb-6">Your feedback helps the community grow.</p>
+    
     <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
-      <div class="mb-4">
-        <fieldset class="starability-growRotate">
+      <div class="mb-6">
+        <label class="block text-sm font-bold text-gray-900 mb-2">Overall Rating</label>
+        <fieldset class="starability-basic">
           <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating."/>
           <input type="radio" id="first-rate1" name="review[rating]" value="1" />
           <label for="first-rate1" title="Terrible">1 star</label>
@@ -157,24 +251,148 @@
         </fieldset>
       </div>
 
-      <div class="mb-4">
-        <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">Comment</label>
+      <div class="mb-6">
+        <label for="comment" class="block text-sm font-bold text-gray-900 mb-2">Message</label>
         <textarea
           name="review[comment]"
           id="comment"
           rows="4"
-          placeholder="Share your experience..."
-          class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          placeholder="What made your stay special?"
+          class="w-full border border-gray-300 rounded-xl p-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm"
           required
         ></textarea>
-        <div class="invalid-feedback text-sm text-rose-500 mt-1">Please enter a comment before submitting.</div>
       </div>
 
-      <button class="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
-        Submit Review
+      <button class="w-full sm:w-auto bg-gray-900 hover:bg-black text-white font-bold py-3 px-10 rounded-xl transition-all shadow-md transform hover:scale-[1.02]">
+        Post Review
       </button>
     </form>
   </div>
   <% } %>
 
 </div>
+
+<script>
+    const checkInInput = document.getElementById('check-in');
+    const checkOutInput = document.getElementById('check-out');
+    const reserveBtn = document.getElementById('reserve-btn');
+    const priceBreakdown = document.getElementById('price-breakdown');
+    const numNightsSpan = document.getElementById('num-nights');
+    const baseTotalSpan = document.getElementById('base-total');
+    const serviceFeeSpan = document.getElementById('service-fee');
+    const grandTotalSpan = document.getElementById('grand-total');
+
+    // Sync input dates validation
+    const today = new Date().toISOString().split('T')[0];
+    checkInInput.min = today;
+    
+    checkInInput.addEventListener('change', () => {
+        checkOutInput.min = checkInInput.value;
+        calculatePrice();
+    });
+
+    checkOutInput.addEventListener('change', calculatePrice);
+
+    function calculatePrice() {
+        const checkIn = new Date(checkInInput.value);
+        const checkOut = new Date(checkOutInput.value);
+        
+        if (checkIn && checkOut && checkOut > checkIn) {
+            const timeDiff = checkOut.getTime() - checkIn.getTime();
+            const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const pricePerNight = <%= listing.price %>;
+            
+            const baseTotal = nights * pricePerNight;
+            const serviceFee = Math.round(baseTotal * 0.12);
+            const grandTotal = baseTotal + serviceFee + 500;
+
+            numNightsSpan.innerText = nights;
+            baseTotalSpan.innerText = baseTotal.toLocaleString('en-IN');
+            serviceFeeSpan.innerText = serviceFee.toLocaleString('en-IN');
+            grandTotalSpan.innerText = grandTotal.toLocaleString('en-IN');
+            
+            priceBreakdown.classList.remove('hidden');
+            reserveBtn.disabled = false;
+        } else {
+            priceBreakdown.classList.add('hidden');
+            reserveBtn.disabled = true;
+        }
+    }
+
+    async function handleBooking(listingId, pricePerNight) {
+        if(!'<%= currUser %>') {
+            window.location.href = '/login';
+            return;
+        }
+
+        const btnText = document.getElementById('btn-text');
+        const btnLoader = document.getElementById('btn-loader');
+        
+        reserveBtn.disabled = true;
+        btnText.innerText = "Processing...";
+        btnLoader.classList.remove('hidden');
+
+        const totalValue = parseInt(grandTotalSpan.innerText.replace(/,/g, ''));
+        
+        try {
+            const response = await fetch('/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    listingId,
+                    checkIn: checkInInput.value,
+                    checkOut: checkOutInput.value,
+                    totalPrice: totalValue
+                })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                // Success - Redirect to My Bookings
+                window.location.href = '/bookings/my-bookings';
+            } else {
+                alert(result.message);
+                reserveBtn.disabled = false;
+                btnText.innerText = "Reserve";
+                btnLoader.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error("Booking Error:", error);
+            alert("Something went wrong. Please try again.");
+            reserveBtn.disabled = false;
+            btnText.innerText = "Reserve";
+            btnLoader.classList.add('hidden');
+        }
+    }
+
+    async function toggleWishlist(id, btn) {
+        if(!'<%= currUser %>') {
+            window.location.href = '/login';
+            return;
+        }
+
+        const icon = btn.querySelector('#heart-icon');
+        const text = btn.querySelector('span');
+
+        try {
+            const response = await fetch(`/wishlist/${id}`, { method: 'POST' });
+            const result = await response.json();
+            
+            if (result.success) {
+                if (result.liked) {
+                    icon.classList.replace('fa-regular', 'fa-solid');
+                    icon.classList.add('text-rose-500');
+                    icon.classList.remove('text-gray-400');
+                    text.innerText = "Saved";
+                } else {
+                    icon.classList.replace('fa-solid', 'fa-regular');
+                    icon.classList.remove('text-rose-500');
+                    icon.classList.add('text-gray-400');
+                    text.innerText = "Save";
+                }
+            }
+        } catch (error) {
+            console.error("Wishlist Error:", error);
+        }
+    }
+</script>
