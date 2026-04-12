@@ -2,10 +2,10 @@ const Listing = require("../models/listing");
 
 module.exports.index = async (req, res) => {
   const searchQuery = req.query.q;
+  const categoryFilter = req.query.category;
   let queryObj = {};
   
   if (searchQuery) {
-    // Basic search: match either location or title (case-insensitive)
     queryObj = {
       $or: [
         { location: { $regex: searchQuery, $options: "i" } },
@@ -13,10 +13,12 @@ module.exports.index = async (req, res) => {
         { country: { $regex: searchQuery, $options: "i" } }
       ]
     };
+  } else if (categoryFilter) {
+    queryObj = { category: categoryFilter };
   }
   
   const allListings = await Listing.find(queryObj);
-  res.render("listings/index.ejs", { allListings });
+  res.render("listings/index.ejs", { allListings, categoryFilter });
 };
 
 module.exports.renderNewForm = (req, res) => {
