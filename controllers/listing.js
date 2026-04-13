@@ -18,6 +18,12 @@ module.exports.index = async (req, res) => {
   }
   
   const allListings = await Listing.find(queryObj);
+  
+  // Attach simulated ratings in controller instead of view
+  allListings.forEach(l => {
+    l.avgRating = (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1);
+  });
+
   res.render("listings/index.ejs", { allListings, categoryFilter, searchQuery });
 };
 

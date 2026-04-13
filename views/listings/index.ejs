@@ -82,12 +82,12 @@
               <span class="tax-info hidden text-xs text-gray-500 ml-1">(incl. 18% GST)</span>
             </div>
           </div>
-          <!-- Dynamic Rating (Randomized but consistent for session) -->
+          <!-- Dynamic Rating (Calculated in Controller) -->
           <div class="flex items-center gap-1 text-sm text-gray-900">
             <i class="fa-solid fa-star text-xs"></i>
-            <% let rating = (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1); %>
-            <span><%= rating %></span>
+            <span><%= listing.avgRating %></span>
           </div>
+
         </div>
       </div>
       <% } %>
