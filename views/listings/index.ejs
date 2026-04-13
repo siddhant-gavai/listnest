@@ -40,6 +40,13 @@
 <!-- Main Listings Grid -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-16">
   
+  <% if(typeof searchQuery !== 'undefined' && searchQuery) { %>
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-900">Results for "<%= searchQuery %>"</h2>
+      <p class="text-sm text-gray-500"><%= allListings.length %> places found</p>
+    </div>
+  <% } %>
+
   <% if(allListings && allListings.length > 0) { %>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% for(let listing of allListings ){ %>
@@ -87,15 +94,20 @@
     </div>
   <% } else { %>
     <!-- Empty State -->
-    <div class="flex flex-col items-center justify-center py-20 text-center">
-      <div class="bg-gray-100 p-6 rounded-full mb-4">
-        <i class="fa-solid fa-magnifying-glass text-4xl text-gray-400"></i>
+    <div class="flex flex-col items-center justify-center py-24 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+      <div class="bg-white p-6 rounded-full shadow-sm mb-6">
+        <i class="fa-solid fa-cloud-moon text-5xl text-gray-300"></i>
       </div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">No exact matches</h2>
-      <p class="text-gray-500 max-w-md">Try changing or removing some of your filters or adjusting your search area.</p>
-      <a href="/listings" class="mt-6 px-6 py-3 border border-black rounded-lg font-semibold hover:bg-gray-50 transition-colors no-underline text-black">Remove all filters</a>
+      <h2 class="text-3xl font-bold text-gray-900 mb-3">No listings found</h2>
+      <p class="text-gray-500 max-w-sm mx-auto mb-8">We couldn't find any places matching your filters. Try adjusting your search or explore all categories.</p>
+      <a href="/listings" class="inline-flex items-center justify-center px-8 py-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all no-underline shadow-lg hover:shadow-xl active:scale-95">
+        Explore all listings
+      </a>
     </div>
   <% } %>
+
+</div>
+
 
 </div>
 

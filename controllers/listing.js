@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
   }
   
   const allListings = await Listing.find(queryObj);
-  res.render("listings/index.ejs", { allListings, categoryFilter });
+  res.render("listings/index.ejs", { allListings, categoryFilter, searchQuery });
 };
 
 module.exports.renderNewForm = (req, res) => {
