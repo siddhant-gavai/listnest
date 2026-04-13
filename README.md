@@ -1,19 +1,21 @@
 # 🏡 ListNest
 
-ListNest is a full-stack web application to create, view, and manage property or room listings — inspired by Airbnb.  
-Built with **Node.js**, **Express**, **MongoDB**, and **EJS**, it supports user authentication, reviews, image uploads, and complete CRUD operations.
+ListNest is a professional full-stack web application designed for exploring and booking unique accommodations worldwide—from cozy rooms to rustic farms and luxury villas.  
+
+Built with the **MERN** stack (Mongo, Express, React/EJS, Node), it features a premium UI, robust authentication, and seamless media management.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-- 🔐 User Authentication (Login, Signup)
-- 🏠 Create, Edit, and Delete Listings
-- 📸 Upload Images (via Cloudinary)
-- ⭐ Leave Reviews with Ratings & Comments
-- 👮 Access Control (isLoggedIn, isOwner, isReviewAuthor)
-- 💬 Flash Messages & Form Validation
-- 🎨 Clean UI using Bootstrap 5
+- 🔐 **Secure Authentication**: User signup, login, and session persistence using Passport.js.
+- 🏠 **Full CRUD**: Manage property listings with detailed descriptions, pricing, and category tagging.
+- 🔍 **Advanced Search**: Context-aware search by location, title, or country with dynamic UI feedback.
+- 🏷️ **Smart Filters**: Category-based listing discovery with smooth, mobile-responsive horizontal scrolling.
+- 📸 **Media Management**: High-performance image uploads and transformation via Cloudinary.
+- ⭐ **Reviews & Ratings**: Integrated review system for user feedback and property quality assurance.
+- 💳 **Tax Transparency**: Real-time tax calculation toggle for transparent pricing.
+- 📱 **Premium UI**: Modern, responsive design using Tailwind CSS and custom transitions.
 
 ---
 
@@ -21,21 +23,45 @@ Built with **Node.js**, **Express**, **MongoDB**, and **EJS**, it supports user 
 
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB, Mongoose
-- **Templating:** EJS
-- **Auth:** Passport.js
-- **Styling:** Bootstrap 5
+- **Templating:** EJS (EJS-Mate for layouts)
+- **Auth:** Passport.js (Local Strategy)
+- **Styling:** Tailwind CSS, Bootstrap 5, FontAwesome
 - **Image Uploads:** Multer + Cloudinary
-- **Utils:** connect-flash, method-override
+- **Maps:** Leaflet.js (for property locations)
 
 ---
 
-## ☁️ Cloudinary Setup
+## 🚀 Quick Start
 
-This project uses [Cloudinary](https://cloudinary.com) to store uploaded images.
+### 1. Prerequisites
+- Node.js (v16+)
+- MongoDB (Local or Atlas)
+- Cloudinary Account
 
-### 🔐 .env Configuration
+### 2. Setup Environment
+Create a `.env` file in the `listnest` directory:
+```env
+CLOUD_NAME=your_cloud_name
+CLOUD_API_KEY=your_api_key
+CLOUD_API_SECRET=your_api_secret
+```
 
-Create a `.env` file in the root directory and add:
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+### 3. Installation
+```bash
+# Clone the repository
+git clone <your-repo-url>
+
+# Navigate to the project directory
+cd Listnest/listnest
+
+# Install dependencies
+npm install
+
+# Run the application
+node app.js
+```
+
+---
+
+## ☁️ Cloudinary Configuration
+This project uses Cloudinary for storage. Ensure your credentials are correct in the `.env` file to enable image uploads for new listings.
