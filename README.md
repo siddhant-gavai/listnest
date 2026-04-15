@@ -39,11 +39,21 @@ Built with the **MERN** stack (Mongo, Express, React/EJS, Node), it features a p
 - Cloudinary Account
 
 ### 2. Setup Environment
-Create a `.env` file in the `listnest` directory:
+Create a `.env` file in the `listnest` directory based on `.env.example`:
 ```env
+# Database Configuration
+MONGO_URL=your_mongodb_uri
+
+# Session Configuration
+SESSION_SECRET=your_super_secret_code
+
+# Cloudinary Configuration
 CLOUD_NAME=your_cloud_name
 CLOUD_API_KEY=your_api_key
 CLOUD_API_SECRET=your_api_secret
+
+# Node Environment
+NODE_ENV=development
 ```
 
 ### 3. Installation
