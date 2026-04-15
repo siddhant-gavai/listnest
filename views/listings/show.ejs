@@ -357,7 +357,10 @@
             }
         } catch (error) {
             console.error("Booking Error:", error);
-            alert("Something went wrong. Please try again.");
+            // Graceful error feedback
+            const errorMessage = error.response ? await error.response.json().then(j => j.message) : "Network error. Please check your connection.";
+            alert("Booking error: " + errorMessage);
+            
             reserveBtn.disabled = false;
             btnText.innerText = "Reserve";
             btnLoader.classList.add('hidden');
