@@ -365,7 +365,7 @@
     }
 
     async function toggleWishlist(id, btn) {
-        if(!'<%= currUser %>') {
+        if(!isAuthenticated) {
             window.location.href = '/login';
             return;
         }
