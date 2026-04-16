@@ -9,6 +9,19 @@ module.exports.listingSchema = joi.object({
       location: joi.string().required(),
       country: joi.string().required(),
       image: joi.string().allow(null, ""),
+      category: joi.string().required().valid(
+        "Farms",
+        "Rooms",
+        "Amazing views",
+        "Iconic cities",
+        "Mountains",
+        "Surfing",
+        "Amazing pools",
+        "Beach",
+        "Cabins",
+        "OMG!",
+        "Lakefront"
+      ),
     })
     .required(),
 });
