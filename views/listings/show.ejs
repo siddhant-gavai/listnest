@@ -271,6 +271,7 @@
 </div>
 
 <script>
+    const isAuthenticated = <%= currUser ? 'true' : 'false' %>;
     const checkInInput = document.getElementById('check-in');
     const checkOutInput = document.getElementById('check-out');
     const reserveBtn = document.getElementById('reserve-btn');
@@ -318,7 +319,6 @@
     }
 
     async function handleBooking(listingId, pricePerNight) {
-        const isAuthenticated = <%= currUser ? 'true' : 'false' %>;
         if(!isAuthenticated) {
             window.location.href = '/login';
             return;
@@ -357,9 +357,7 @@
             }
         } catch (error) {
             console.error("Booking Error:", error);
-            // Graceful error feedback
-            const errorMessage = error.response ? await error.response.json().then(j => j.message) : "Network error. Please check your connection.";
-            alert("Booking error: " + errorMessage);
+            alert("Booking error: Network issue or server error.");
             
             reserveBtn.disabled = false;
             btnText.innerText = "Reserve";
