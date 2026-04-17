@@ -11,7 +11,7 @@
   // Safe Wishlist Check
   let isLiked = false;
   if (currUser && currUser.wishlist) {
-    isLiked = currUser.wishlist.some(wishId => wishId && wishId.toString() === listing._id.toString());
+    isLiked = currUser.wishlist.some(wishId => wishId && (wishId.toString() === (listing._id ? listing._id.toString() : '')));
   }
 %>
 
@@ -40,9 +40,9 @@
   </div>
 
   <!-- Hero Image -->
-  <div class="w-full h-[50vh] rounded-2xl overflow-hidden mb-8 shadow-sm relative">
+  <div class="w-full h-[50vh] rounded-2xl overflow-hidden mb-8 shadow-sm relative bg-gray-100">
     <img
-      src="<%= listing.image.url %>"
+      src="<%= (listing.image && listing.image.url) ? listing.image.url : '/images/placeholder.jpg' %>"
       alt="Listing Image"
       class="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.02]"
     />
@@ -129,7 +129,7 @@
         <button 
           id="reserve-btn"
           disabled
-          onclick="handleBooking('<%= listing._id %>', <%= listing.price %>)"
+          onclick="handleBooking('<%= listing._id %>')"
           class="w-full mb-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform font-bold py-3.5 rounded-xl shadow-lg text-white flex items-center justify-center gap-2"
         >
           <span id="btn-text">Reserve</span>
@@ -299,7 +299,7 @@
         if (checkIn && checkOut && checkOut > checkIn) {
             const timeDiff = checkOut.getTime() - checkIn.getTime();
             const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            const pricePerNight = <%= listing.price %>;
+            const pricePerNight = <%= listing.price || 0 %>;
             
             const baseTotal = nights * pricePerNight;
             const serviceFee = Math.round(baseTotal * 0.12);
@@ -318,7 +318,11 @@
         }
     }
 
-    async function handleBooking(listingId, pricePerNight) {
+    /**
+     * Handles the reservation process for a listing
+     * Validates authentication and sends booking details to the server
+     */
+    async function handleBooking(listingId) {
         if(!isAuthenticated) {
             window.location.href = '/login';
             return;
@@ -380,14 +384,12 @@
             
             if (result.success) {
                 if (result.liked) {
-                    icon.classList.replace('fa-regular', 'fa-solid');
-                    icon.classList.add('text-rose-500');
-                    icon.classList.remove('text-gray-400');
+                    icon.classList.remove('fa-regular', 'text-gray-400');
+                    icon.classList.add('fa-solid', 'text-rose-500');
                     text.innerText = "Saved";
                 } else {
-                    icon.classList.replace('fa-solid', 'fa-regular');
-                    icon.classList.remove('text-rose-500');
-                    icon.classList.add('text-gray-400');
+                    icon.classList.remove('fa-solid', 'text-rose-500');
+                    icon.classList.add('fa-regular', 'text-gray-400');
                     text.innerText = "Save";
                 }
             }
