@@ -21,6 +21,8 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
 
+// Establish connection to MongoDB using the URL from environment variables
+// Falls back to development URL if not provided
 const MONGO_URL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
