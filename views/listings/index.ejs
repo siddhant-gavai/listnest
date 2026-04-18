@@ -83,7 +83,7 @@
             <h3 class="text-sm font-semibold text-gray-900 truncate pr-2"><%= listing.location %>, <%= listing.country %></h3>
             <p class="text-sm text-gray-500 mt-0.5 truncate pr-2"><%= listing.title %></p>
             <div class="mt-1 flex items-baseline gap-1">
-              <span class="text-sm font-semibold text-gray-900 listing-price" data-base-price="<%= listing.price %>">&#8377; <%= listing.price.toLocaleString("en-IN") %></span>
+              <span class="text-sm font-semibold text-gray-900 listing-price" data-base-price="<%= listing.price %>">&#8377; <%= (listing.price || 0).toLocaleString("en-IN") %></span>
               <span class="text-sm text-gray-900">night</span>
               <span class="tax-info hidden text-xs text-gray-500 ml-1">(incl. 18% GST)</span>
             </div>
