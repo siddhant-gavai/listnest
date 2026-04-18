@@ -301,23 +301,42 @@
 
     checkOutInput.addEventListener('change', calculatePrice);
 
+    /**
+     * Calculates the total price based on check-in and check-out dates.
+     * Updates the UI breakdown and enables/disables the reserve button.
+     */
     function calculatePrice() {
+        if (!checkInInput.value || !checkOutInput.value) {
+            priceBreakdown.classList.add('hidden');
+            reserveBtn.disabled = true;
+            return;
+        }
+
         const checkIn = new Date(checkInInput.value);
         const checkOut = new Date(checkOutInput.value);
         
         if (checkIn && checkOut && checkOut > checkIn) {
-            const timeDiff = checkOut.getTime() - checkIn.getTime();
+            const timeDiff = Math.abs(checkOut.getTime() - checkIn.getTime());
             const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            const pricePerNight = <%= listing.price || 0 %>;
             
+            // Safety check for listing.price from EJS
+            const pricePerNight = Number('<%= listing.price || 0 %>');
+            
+            if (isNaN(pricePerNight) || pricePerNight <= 0) {
+                console.error("Invalid price per night");
+                return;
+            }
+
             const baseTotal = nights * pricePerNight;
             const serviceFee = Math.round(baseTotal * 0.12);
-            const grandTotal = baseTotal + serviceFee + 500;
+            const cleaningFee = 500;
+            const grandTotal = baseTotal + serviceFee + cleaningFee;
 
-            numNightsSpan.innerText = nights;
-            baseTotalSpan.innerText = baseTotal.toLocaleString('en-IN');
-            serviceFeeSpan.innerText = serviceFee.toLocaleString('en-IN');
-            grandTotalSpan.innerText = grandTotal.toLocaleString('en-IN');
+            // Update UI elements
+            numNightsSpan.textContent = nights;
+            baseTotalSpan.textContent = baseTotal.toLocaleString('en-IN');
+            serviceFeeSpan.textContent = serviceFee.toLocaleString('en-IN');
+            grandTotalSpan.textContent = grandTotal.toLocaleString('en-IN');
             
             priceBreakdown.classList.remove('hidden');
             reserveBtn.disabled = false;
@@ -344,7 +363,8 @@
         btnText.innerText = "Processing...";
         btnLoader.classList.remove('hidden');
 
-        const totalValue = parseInt(grandTotalSpan.innerText.replace(/,/g, ''));
+        // Extract numeric value from text, removing commas and currency symbols if present
+        const totalValue = parseInt(grandTotalSpan.textContent.replace(/[^0-9]/g, '')) || 0;
         
         try {
             const response = await fetch('/bookings', {
