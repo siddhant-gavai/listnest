@@ -95,7 +95,7 @@
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-2xl sticky top-28 ring-1 ring-black ring-opacity-5">
         <div class="flex justify-between items-baseline mb-6">
           <div>
-            <span class="text-2xl font-bold text-gray-900">&#8377; <%= listing.price.toLocaleString("en-IN") %></span>
+            <span class="text-2xl font-bold text-gray-900">&#8377; <%= (listing.price || 0).toLocaleString("en-IN") %></span>
             <span class="text-gray-500 text-sm font-medium"> night</span>
           </div>
           <div class="text-sm font-semibold flex items-center gap-1">
@@ -150,7 +150,7 @@
         <!-- Price Breakdown -->
         <div id="price-breakdown" class="hidden space-y-3">
           <div class="flex justify-between text-gray-600">
-            <span class="underline">₹ <%= listing.price.toLocaleString("en-IN") %> x <span id="num-nights">0</span> nights</span>
+            <span class="underline">₹ <%= (listing.price || 0).toLocaleString("en-IN") %> x <span id="num-nights">0</span> nights</span>
             <span>₹ <span id="base-total">0</span></span>
           </div>
           <div class="flex justify-between text-gray-600">
