@@ -27,11 +27,17 @@
   </div>
 
   <!-- Tax Toggle -->
-  <div class="hidden sm:flex items-center gap-3 tax-toggle cursor-pointer" id="tax-toggle-btn">
-    <span class="text-xs font-semibold text-gray-800 whitespace-nowrap">Display total after taxes</span>
-    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-      <input type="checkbox" id="switchCheckDefault" class="peer toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-2 appearance-none cursor-pointer transition-all duration-300 checked:translate-x-5 checked:border-indigo-600 z-10"/>
-      <label for="switchCheckDefault" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300 peer-checked:bg-indigo-600"></label>
+  <div class="hidden sm:flex items-center gap-6 tax-toggle-container">
+    <div class="flex items-center gap-2 text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100 shadow-sm">
+      <i class="fa-solid fa-shield-halved text-xs"></i>
+      <span class="text-[10px] font-bold uppercase tracking-wider">100% Secure</span>
+    </div>
+    <div class="flex items-center gap-3 cursor-pointer group" id="tax-toggle-btn">
+      <span class="text-xs font-bold text-gray-700 group-hover:text-black transition-colors whitespace-nowrap">Show total after taxes</span>
+      <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+        <input type="checkbox" id="switchCheckDefault" class="peer toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-2 appearance-none cursor-pointer transition-all duration-300 checked:translate-x-5 checked:border-indigo-600 z-10"/>
+        <label for="switchCheckDefault" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-200 cursor-pointer transition-colors duration-300 peer-checked:bg-indigo-600 shadow-inner"></label>
+      </div>
     </div>
   </div>
 </div>
