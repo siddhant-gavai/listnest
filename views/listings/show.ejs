@@ -53,29 +53,32 @@
     <!-- Main Info -->
     <div class="lg:col-span-2">
       <div class="flex justify-between items-center pb-6 border-b border-gray-200">
-        <div>
-          <h2 class="text-xl font-semibold mb-1">
-            Entire home hosted by <%= listing.owner ? listing.owner.username : 'Host' %>
-          </h2>
-          <p class="text-gray-500">4 guests &middot; 2 bedrooms &middot; 2 beds &middot; 2 baths</p>
-        </div>
-        <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-2xl font-bold">
-          <%= listing.owner ? listing.owner.username[0].toUpperCase() : 'H' %>
+        <div class="relative">
+          <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-500 text-2xl font-bold border-2 border-white shadow-sm">
+            <%= listing.owner ? listing.owner.username[0].toUpperCase() : 'H' %>
+          </div>
+          <div class="absolute -bottom-1 -right-1 bg-rose-500 text-white rounded-full p-1 border-2 border-white shadow-sm flex items-center justify-center w-6 h-6">
+            <i class="fa-solid fa-medal text-[10px]"></i>
+          </div>
         </div>
       </div>
       
       <div class="py-6 border-b border-gray-200">
-        <div class="flex items-start gap-4 mb-6">
-          <i class="fa-solid fa-door-open text-2xl text-gray-700"></i>
+        <div class="flex items-start gap-4 mb-6 group cursor-default">
+          <div class="bg-gray-50 p-3 rounded-xl group-hover:bg-indigo-50 transition-colors">
+            <i class="fa-solid fa-door-open text-xl text-gray-700 group-hover:text-indigo-600"></i>
+          </div>
           <div>
-            <h3 class="font-semibold text-gray-900">Self check-in</h3>
+            <h3 class="font-bold text-gray-900">Self check-in</h3>
             <p class="text-gray-500 text-sm">Check yourself in with the keypad.</p>
           </div>
         </div>
-        <div class="flex items-start gap-4 mb-6">
-          <i class="fa-solid fa-calendar-check text-2xl text-gray-700"></i>
+        <div class="flex items-start gap-4 mb-6 group cursor-default">
+          <div class="bg-gray-50 p-3 rounded-xl group-hover:bg-indigo-50 transition-colors">
+            <i class="fa-solid fa-calendar-check text-xl text-gray-700 group-hover:text-indigo-600"></i>
+          </div>
           <div>
-            <h3 class="font-semibold text-gray-900">Free cancellation for 48 hours</h3>
+            <h3 class="font-bold text-gray-900">Free cancellation for 48 hours</h3>
             <p class="text-gray-500 text-sm">Get a full refund if you change your mind.</p>
           </div>
         </div>
@@ -137,6 +140,12 @@
         </button>
         
         <p class="text-center text-gray-500 text-xs mb-6">You won't be charged yet</p>
+
+        <!-- Trust Badge -->
+        <div class="flex items-center justify-center gap-2 mb-6 bg-gray-50 py-3 rounded-xl border border-gray-100">
+          <i class="fa-solid fa-tags text-indigo-600 text-xs"></i>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Price Match Guarantee</span>
+        </div>
 
         <!-- Price Breakdown -->
         <div id="price-breakdown" class="hidden space-y-3">
